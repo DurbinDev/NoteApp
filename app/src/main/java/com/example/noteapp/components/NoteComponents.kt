@@ -35,7 +35,7 @@ fun NoteInputText(
         maxLines = maxLine,
         label = {Text(Label)},
         keyboardOptions = KeyboardOptions.Default.copy(
-            imeAction = ImeAction.Done),
+            imeAction = ImeAction.Default),
         keyboardActions = KeyboardActions(onDone = {
             onImeAction()
             keyBoardController?.hide()

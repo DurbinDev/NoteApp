@@ -25,6 +25,7 @@ import com.example.noteapp.R
 import com.example.noteapp.components.NoteButton
 import com.example.noteapp.components.NoteInputText
 import com.example.noteapp.model.Note
+import com.example.noteapp.util.formateDate
 import java.time.format.DateTimeFormatter
 
 @Composable
@@ -79,6 +80,7 @@ fun NoteScreen(
                 modifier = Modifier
                     .padding(top = 10.dp, bottom = 20.dp),
                 text = description,
+                maxLine = 50,
                 Label = "Add Note",
                 onTextChange = {
                     if (it.all { char ->
@@ -90,7 +92,7 @@ fun NoteScreen(
             NoteButton(
                 text = "Save",
                 onCLick = {
-                    if(title.isNotEmpty() && description.isNotEmpty()){
+                    if(title.isNotBlank() && description.isNotBlank()){
                         onAddNote(Note(title = title, description = description))
 
                         title = ""
@@ -98,6 +100,18 @@ fun NoteScreen(
 
                         Toast.makeText(
                             context, "Note Added",
+                            Toast.LENGTH_SHORT).show()
+                    }else if(title.isNotBlank() && description.isBlank()){
+                        Toast.makeText(
+                            context, "No description added!",
+                            Toast.LENGTH_SHORT).show()
+                    }else if (title.isBlank() && description.isNotBlank()){
+                        Toast.makeText(
+                            context, "No title added!",
+                            Toast.LENGTH_SHORT).show()
+                    }else{
+                        Toast.makeText(
+                            context, "Nothing added!",
                             Toast.LENGTH_SHORT).show()
                     }
                 })
@@ -143,7 +157,7 @@ fun NoteRow(
                 Text(
                     note.description,
                     style = MaterialTheme.typography.subtitle1)
-                Text(note.entryDate.format(DateTimeFormatter.ofPattern("EEE, d MMM")),
+                Text(text = formateDate(note.entryDate.time),
                     style = MaterialTheme.typography.caption)
             }
         }
